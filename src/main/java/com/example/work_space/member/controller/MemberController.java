@@ -1,5 +1,6 @@
 package com.example.work_space.member.controller;
 
+import com.example.work_space.constants.CommonResponse;
 import com.example.work_space.member.dto.MemberRequestDto;
 import com.example.work_space.member.dto.MemberResponseDto;
 import com.example.work_space.member.dto.MemberUpdateRequestDto;
@@ -18,31 +19,31 @@ public class MemberController {
     }
 
     @PostMapping("/register")
-    public ResponseEntity<MemberResponseDto> registerMember
+    public ResponseEntity<CommonResponse<MemberResponseDto>> registerMember
             (@RequestBody MemberRequestDto requestDto) {
         MemberResponseDto member = memberService.registerMember(requestDto);
-        return ResponseEntity.ok(member);
+        return ResponseEntity.ok(new CommonResponse<>("회원 생성", member));
     }
 
     @GetMapping("/{memberId}")
-    public ResponseEntity<MemberResponseDto> getMember
+    public ResponseEntity<CommonResponse<MemberResponseDto>> getMember
             (@PathVariable Long memberId) {
         MemberResponseDto member = memberService.getMember(memberId);
-        return ResponseEntity.ok(member);
+        return ResponseEntity.ok(new CommonResponse<>("회원 조회",member));
     }
 
     @PatchMapping("/{memberId}")
-    public ResponseEntity<MemberResponseDto> updateMember
+    public ResponseEntity<CommonResponse<MemberResponseDto>> updateMember
             (@PathVariable Long memberId, @RequestBody MemberUpdateRequestDto requestDto) {
         MemberResponseDto member = memberService.updateMember(memberId, requestDto);
-        return ResponseEntity.ok(member);
+        return ResponseEntity.ok(new CommonResponse<>("회원 수정", member));
     }
 
     @DeleteMapping("/{memberId}")
-    public ResponseEntity<String> deleteMember
+    public ResponseEntity<CommonResponse<String>> deleteMember
             (@PathVariable Long memberId,
             @RequestParam String password) {
         memberService.deleteMember(memberId, password);
-        return ResponseEntity.ok("회원 삭제 완료");
+        return ResponseEntity.ok(new CommonResponse<>("회원 삭제 완료"));
     }
 }
