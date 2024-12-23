@@ -6,7 +6,7 @@ import com.example.work_space.workspace.entity.WorkSpace;
 import com.example.work_space.workspace.repository.WorkSpaceRepository;
 import com.example.work_space.workspace.type.WorkSpaceRole;
 import com.example.work_space.workspace_member.dto.InviteMemberRequestDto;
-import com.example.work_space.workspace_member.dto.MemberRoleDto;
+import com.example.work_space.workspace_member.dto.WorkSpaceMemberRoleDto;
 import com.example.work_space.workspace_member.dto.WorkSpaceMemberDto;
 import com.example.work_space.workspace_member.entity.WorkSpaceMember;
 import com.example.work_space.workspace_member.repository.WorkSpaceMemberRepository;
@@ -77,12 +77,12 @@ public class WorkSpaceMemberServiceImpl implements WorkSpaceMemberService {
     }
 
     @Transactional
-    public void changeMemberRole(Long workspaceId, MemberRoleDto memberRoleDto) {
+    public void changeMemberRole(Long workspaceId, WorkSpaceMemberRoleDto workSpaceMemberRoleDto) {
         // 멤버 조회
-        WorkSpaceMember workSpaceMember = workSpaceMemberRepository.findByWorkSpaceIdAndMemberId(workspaceId, memberRoleDto.getMemberId())
+        WorkSpaceMember workSpaceMember = workSpaceMemberRepository.findByWorkSpaceIdAndMemberId(workspaceId, workSpaceMemberRoleDto.getMemberId())
                 .orElseThrow(() -> new IllegalArgumentException("워크스페이스 멤버를 찾을 수 없습니다."));
 
         // 역할 변경
-        workSpaceMember.changeRole(memberRoleDto.getRole());
+        workSpaceMember.changeRole(workSpaceMemberRoleDto.getRole());
     }
 }
