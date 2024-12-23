@@ -1,5 +1,6 @@
 package com.example.work_space.workspace.controller;
 
+import com.example.work_space.constants.CommonResponse;
 import com.example.work_space.workspace.dto.WorkSpaceRequestDto;
 import com.example.work_space.workspace.dto.WorkSpaceResponseDto;
 import com.example.work_space.workspace.service.WorkSpaceService;
@@ -17,25 +18,25 @@ public class WorkSpaceController {
     }
 
     @PostMapping
-    public ResponseEntity<WorkSpaceResponseDto> createWorkSpace
+    public ResponseEntity<CommonResponse<WorkSpaceResponseDto>> createWorkSpace
             (
              @RequestBody WorkSpaceRequestDto requestDto) {
         WorkSpaceResponseDto workSpace = workSpaceService.createWorkSpace(requestDto);
-        return ResponseEntity.ok(workSpace);
+        return ResponseEntity.ok(new CommonResponse<>("워크 스페이스 생성", workSpace));
     }
 
     @PatchMapping("/{workSpaceId}")
-    public ResponseEntity<WorkSpaceResponseDto> updateWorkSpace
+    public ResponseEntity<CommonResponse<WorkSpaceResponseDto>> updateWorkSpace
             (@PathVariable Long workSpaceId,
              @RequestBody WorkSpaceRequestDto requestDto) {
         WorkSpaceResponseDto workSpace = workSpaceService.updateWorkSpace(workSpaceId, requestDto);
-        return ResponseEntity.ok(workSpace);
+        return ResponseEntity.ok(new CommonResponse<>("워크스페이스 수정", workSpace));
     }
 
     @DeleteMapping("/{workSpaceId}")
-    public ResponseEntity<String> deleteWorkSpace
+    public ResponseEntity<CommonResponse<String>> deleteWorkSpace
             (@PathVariable Long workSpaceId) {
         workSpaceService.deleteWorkSpace(workSpaceId);
-        return ResponseEntity.ok("워크스페이스 삭제 완료");
+        return ResponseEntity.ok(new CommonResponse<>("워크스페이스 삭제 완료"));
     }
 }
