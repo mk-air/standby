@@ -13,4 +13,6 @@ public class MemberRoleDto {
         this.memberId = memberId;
         this.role = role;
     }
+
+
 }
