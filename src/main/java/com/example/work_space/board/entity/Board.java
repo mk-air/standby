@@ -1,6 +1,7 @@
 package com.example.work_space.board.entity;
 
 import com.example.work_space.constants.BaseEntity;
+import com.example.work_space.workspace.entity.WorkSpace;
 import jakarta.persistence.*;
 import lombok.Builder;
 import lombok.Getter;
@@ -17,8 +18,13 @@ public class Board extends BaseEntity {
     private String img;
     private String info;
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "workspace_id", nullable = false)
+    private WorkSpace workSpace;
+
     @Builder
-    public Board(String title, String color, String img, String info) {
+    public Board(WorkSpace workSpace, String title, String color, String img, String info) {
+        this.workSpace = workSpace;
         this.title = title;
         this.color = color;
         this.img = img;
@@ -28,7 +34,7 @@ public class Board extends BaseEntity {
     public Board() {
     }
 
-    public Board update(String title, String color, String img, String info) {
+    public Board updateBoard(String title, String color, String img, String info) {
         this.title = title;
         this.color = color;
         this.img = img;
