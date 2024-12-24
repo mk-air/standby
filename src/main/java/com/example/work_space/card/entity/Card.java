@@ -42,6 +42,6 @@ public class Card extends BaseEntity {
         return this;
     }
 
-    protected Card(){
+    protected Card() {
     }
 }
