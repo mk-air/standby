@@ -9,6 +9,9 @@ import com.example.work_space.card.repository.CardRepository;
 import com.example.work_space.list.repository.ListRepository;
 import com.example.work_space.member.entity.Member;
 import com.example.work_space.member.repository.MemberRepository;
+import com.example.work_space.workspace.type.WorkSpaceRole;
+import com.example.work_space.workspace_member.entity.WorkSpaceMember;
+import com.example.work_space.workspace_member.repository.WorkSpaceMemberRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -16,17 +19,20 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
 public class CardServiceImpl implements CardService {
 
     private final MemberRepository memberRepository;
+    private final WorkSpaceMemberRepository workSpaceMemberRepository;
     private final ListRepository listRepository;
     private final CardRepository cardRepository;
 
-    public CardServiceImpl(MemberRepository memberRepository, ListRepository listRepository, CardRepository cardRepository) {
+    public CardServiceImpl(MemberRepository memberRepository, WorkSpaceMemberRepository workSpaceMemberRepository, ListRepository listRepository, CardRepository cardRepository) {
         this.memberRepository = memberRepository;
+        this.workSpaceMemberRepository = workSpaceMemberRepository;
         this.listRepository = listRepository;
         this.cardRepository = cardRepository;
     }
@@ -34,12 +40,14 @@ public class CardServiceImpl implements CardService {
 
     @Transactional
     @Override
-    public CardResponseDto createCard(CardRequestDto requestDto) {
+    public CardResponseDto createCard(CardRequestDto requestDto, Long authId) {
+        com.example.work_space.list.entity.List list = listRepository.findById(requestDto.getListId())
+                .orElseThrow(() -> new IllegalArgumentException("유효하지 않은 리스트입니다."));
+
+        hasAccess(list, authId);
         // 사용자 확인
         Member member = memberRepository.findByEmail(requestDto.getMember())
                 .orElseThrow(() -> new IllegalArgumentException("유효하지 않은 사용자입니다."));
-        com.example.work_space.list.entity.List list = listRepository.findById(requestDto.getListId())
-                .orElseThrow(() -> new IllegalArgumentException("유효하지 않은 리스트입니다."));
 
         Date inputDate = isBeforeToday(requestDto.getDeadline());
 
@@ -57,13 +65,14 @@ public class CardServiceImpl implements CardService {
     }
 
     @Override
-    public CardResponseDto updateCard(CardRequestDto requestDto, Long cardId) {
+    public CardResponseDto updateCard(CardRequestDto requestDto, Long cardId, Long authId) {
+        Card card = cardRepository.findById(cardId)
+                .orElseThrow(() -> new IllegalArgumentException("유효하지 않은 카드입니다"));
+        hasAccess(card.getList(), authId);
+
         // 사용자 확인
         Member member = memberRepository.findByEmail(requestDto.getMember())
                 .orElseThrow(() -> new IllegalArgumentException("유효하지 않은 사용자입니다."));
-
-        Card card = cardRepository.findById(cardId)
-                .orElseThrow(() -> new IllegalArgumentException("유효하지 않은 카드입니다"));
 
         Date inputDate = isBeforeToday(requestDto.getDeadline());
 
@@ -83,10 +92,12 @@ public class CardServiceImpl implements CardService {
     }
 
     @Override
-    public void deleteCard(Long cardId) {
+    public void deleteCard(Long cardId, Long authId) {
 
         Card card = cardRepository.findById(cardId)
                 .orElseThrow(() -> new IllegalArgumentException("유효하지 않은 카드입니다"));
+
+        hasAccess(card.getList(), authId);
 
         cardRepository.delete(card);
     }
@@ -160,5 +171,18 @@ public class CardServiceImpl implements CardService {
         }
     }
 
+    public void hasAccess(com.example.work_space.list.entity.List list, Long authId) {
+        Long workSpaceId = list.getBoard().getWorkSpace().getId();
+        Optional<WorkSpaceMember> workSpaceMember = workSpaceMemberRepository.findByWorkSpaceIdAndMemberId(workSpaceId, authId);
+        WorkSpaceRole role;
+        if (workSpaceMember.isPresent()) {
+            role = workSpaceMember.get().getRole();
+        } else {
+            throw new IllegalStateException("조회할 수 없는 워크스페이스 멤버입니다");
+        }
 
+        if (role == WorkSpaceRole.READ_ONLY) {
+            throw new SecurityException("권한이 없는 워크스페이스 멤버입니다");
+        }
+    }
 }

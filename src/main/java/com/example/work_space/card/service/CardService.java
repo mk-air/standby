@@ -8,13 +8,13 @@ import com.example.work_space.card.dto.CardSearchRequestDto;
 import java.util.List;
 
 public interface CardService {
-    CardResponseDto createCard(CardRequestDto requestDto);
+    CardResponseDto createCard(CardRequestDto requestDto, Long authId);
 
-    CardResponseDto updateCard(CardRequestDto requestDto, Long cardId);
+    CardResponseDto updateCard(CardRequestDto requestDto, Long cardId, Long authId);
 
     CardDetailResponseDto getCardDetail(Long cardId);
 
-    void deleteCard(Long cardId);
+    void deleteCard(Long cardId, Long authId);
 
     List<CardResponseDto> searchCard(CardSearchRequestDto requestDto);
 }
