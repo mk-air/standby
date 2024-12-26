@@ -27,10 +27,14 @@ public class ListServiceImpl implements ListService {
         // Board 조회
         Board board = boardRepository.findById(requestDto.getBoardId()).orElseThrow();
 
+        Long count = listRepository.countByBoardId(board.getId());
+
         List list = List.builder()
                 .board(board)
                 .title(requestDto.getTitle())
+                .seq(++count)
                 .build();
+
         List savedList = listRepository.save(list);
 
         return new ListResponseDto(savedList);
@@ -52,7 +56,7 @@ public class ListServiceImpl implements ListService {
 
             /**
              * 수정된 시퀀스가 기존 시퀀스보다 클 경우,
-             * 기존 시퀀스 초과 ~ 수정된 시퀀스 이하의 순서를 1일씩 낮춰줌
+             * 기존 시퀀스 초과 ~ 수정된 시퀀스 이하의 순서를 1씩 낮춰줌
              */
             if(updateRequestDto.getSeq() > list.getSeq()) {
                 lists.stream()
