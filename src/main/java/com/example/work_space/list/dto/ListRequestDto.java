@@ -8,22 +8,22 @@ import lombok.Getter;
 public class ListRequestDto {
 
     private Long boardId;
-    private Long id;
 
     @NotBlank
     private String title;
     private Long seq;
 
-    public ListRequestDto(Long boardId, Long id, String title, Long seq) {
+    public ListRequestDto(Long boardId, String title, Long seq) {
         this.boardId = boardId;
-        this.id = id;
         this.title = title;
         this.seq = seq;
     }
 
+    public ListRequestDto() {
+    }
+
     public ListRequestDto(ListRequestDto requestDto) {
         this.boardId = requestDto.getBoardId();
-        this.id = requestDto.getId();
         this.title = requestDto.getTitle();
         this.seq = requestDto.getSeq();
     }

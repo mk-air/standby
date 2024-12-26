@@ -11,6 +11,7 @@ public class ListResponseDto {
     private Long id;
     private String title; // 리스트 제목
     private Long seq; // 리스트 순서
+//    private List<CardResponseDto> cards;
     private LocalDateTime createdAt;
 
     public ListResponseDto(Long boardId, Long id, String title, Long seq, LocalDateTime createdAt) {
@@ -26,6 +27,6 @@ public class ListResponseDto {
         this.id = list.getId();
         this.title = list.getTitle();
         this.seq = list.getSeq();
-        this.createdAt = list.getCreateAt();
+        this.createdAt = list.getCreatedAt();
     }
 }
