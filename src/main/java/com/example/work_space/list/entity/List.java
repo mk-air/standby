@@ -20,6 +20,9 @@ public class List extends BaseEntity {
     @JoinColumn(name = "board_id", nullable = false)
     private Board board;
 
+//    @OneToMany(mappedBy = "list", cascade = CascadeType.ALL, orphanRemoval = true)
+//    private List<Card> cards = new ArrayList<>();
+
     @Builder
     public List(Board board, String title, Long seq) {
         this.board = board;
