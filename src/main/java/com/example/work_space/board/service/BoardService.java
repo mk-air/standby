@@ -1,18 +1,15 @@
 package com.example.work_space.board.service;
 
-import com.example.work_space.board.dto.BoardRequestDto;
-import com.example.work_space.board.dto.BoardResponseDto;
-import com.example.work_space.board.dto.BoardUpdateRequestDto;
-import com.example.work_space.board.dto.BoardUpdateResponseDto;
+import com.example.work_space.board.dto.*;
 
 import java.util.List;
 
 public interface BoardService {
 
     BoardResponseDto createBoard(BoardRequestDto requestDto);
-    BoardResponseDto getBoard(Long boardId);
-    List<BoardResponseDto> getBoards();
+    BoardDetailResponseDto getBoard(Long boardId, Long memberId);
+    List<BoardResponseDto> getBoards(Long workSpaceId);
     BoardUpdateResponseDto updateBoard(Long boardId, BoardUpdateRequestDto updateRequestDto);
-    void deleteBoard(Long boardId);
+    void deleteBoard(Long boardId, Long memberId);
 
 }
