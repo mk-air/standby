@@ -51,6 +51,13 @@ public class CardController {
         return ResponseEntity.ok(new CommonResponse<>("카드 삭제 완료"));
     }
 
+    @GetMapping
+    public ResponseEntity<CommonResponse<List<CardResponseDto>>> searchCard(
+            @RequestBody CardSearchRequestDto requestDto) {
+
+        List<CardResponseDto> responseDtos = cardService.searchCard(requestDto);
+        return ResponseEntity.ok(new CommonResponse<>("카드 검색 완료", responseDtos));
+    }
 
 
 }

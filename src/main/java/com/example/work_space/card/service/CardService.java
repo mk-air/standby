@@ -15,4 +15,6 @@ public interface CardService {
     CardDetailResponseDto getCardDetail(Long cardId);
 
     void deleteCard(Long cardId);
+
+    List<CardResponseDto> searchCard(CardSearchRequestDto requestDto);
 }
