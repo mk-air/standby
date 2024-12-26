@@ -1,7 +1,9 @@
 package com.example.work_space.card.service;
 
+import com.example.work_space.card.dto.CardDetailResponseDto;
 import com.example.work_space.card.dto.CardRequestDto;
 import com.example.work_space.card.dto.CardResponseDto;
+import com.example.work_space.card.dto.CardSearchRequestDto;
 import com.example.work_space.card.entity.Card;
 import com.example.work_space.card.repository.CardRepository;
 import com.example.work_space.member.entity.Member;
@@ -13,6 +15,8 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.format.DateTimeParseException;
 import java.util.Date;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class CardServiceImpl implements CardService {
@@ -51,7 +55,7 @@ public class CardServiceImpl implements CardService {
                 .orElseThrow(() -> new IllegalArgumentException("유효하지 않은 사용자입니다."));
 
         Card card = cardRepository.findById(cardId)
-                .orElseThrow(()-> new IllegalArgumentException("유효하지 않은 카드입니다"));
+                .orElseThrow(() -> new IllegalArgumentException("유효하지 않은 카드입니다"));
 
         Date inputDate = checkDate(requestDto.getDeadline());
 
@@ -60,6 +64,27 @@ public class CardServiceImpl implements CardService {
 
         return new CardResponseDto(card);
     }
+
+    @Override
+    public CardDetailResponseDto getCardDetail(Long cardId) {
+
+        Card card = cardRepository.findById(cardId)
+                .orElseThrow(() -> new IllegalArgumentException("유효하지 않은 카드입니다"));
+
+        return new CardDetailResponseDto(card);
+    }
+
+    @Override
+    public void deleteCard(Long cardId) {
+
+        Card card = cardRepository.findById(cardId)
+                .orElseThrow(() -> new IllegalArgumentException("유효하지 않은 카드입니다"));
+
+        cardRepository.delete(card);
+    }
+
+
+
 
     public static Date checkDate(String dateString) {
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
@@ -72,7 +97,7 @@ public class CardServiceImpl implements CardService {
             // 오늘 날짜를 가져오기 (시간 정보를 제거한 오늘 날짜)
             Date today = sdf.parse(sdf.format(new Date()));
 
-            if(inputDate.before(today)) {
+            if (inputDate.before(today)) {
                 throw new IllegalStateException("오늘 이전의 날짜는 입력할 수 없습니다");
             }
 
@@ -81,9 +106,6 @@ public class CardServiceImpl implements CardService {
             throw new IllegalArgumentException("올바르지 않은 날짜 형식입니다", e);
         }
     }
-
-
-
 
 
 }
