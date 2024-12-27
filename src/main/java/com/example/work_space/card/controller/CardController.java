@@ -56,7 +56,7 @@ public class CardController {
         return ResponseEntity.ok(new CommonResponse<>("카드 상세 조회 완료", responseDto));
     }
 
-    @DeleteMapping("/cardId")
+    @DeleteMapping("/{cardId}")
     public ResponseEntity<CommonResponse<String>> deleteCard(
             @PathVariable Long cardId, HttpServletRequest request) {
         HttpSession session =request.getSession(false);
