@@ -49,6 +49,7 @@ public class BoardServiceImpl implements BoardService {
         Board savedBoard = boardRepository.save(board);
         AttachFile imgFile = attachFileService.createImgFile(file);
         savedBoard.updateAttachFile(imgFile);
+        imgFile.updateBoard(savedBoard);
 
         return new BoardResponseDto(savedBoard);
 
