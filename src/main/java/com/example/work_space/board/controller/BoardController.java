@@ -47,8 +47,9 @@ public class BoardController {
 
     @PutMapping("/{boardId}")
     public ResponseEntity<CommonResponse<BoardUpdateResponseDto>> updateBoard(
-            @PathVariable Long boardId, @RequestBody BoardUpdateRequestDto requestDto) {
-        BoardUpdateResponseDto updateBoard = boardService.updateBoard(boardId, requestDto);
+            @PathVariable Long boardId, @RequestPart BoardUpdateRequestDto requestDto,
+            @RequestPart MultipartFile file) {
+        BoardUpdateResponseDto updateBoard = boardService.updateBoard(boardId, requestDto,file);
         return ResponseEntity.ok(new CommonResponse<>("보드 수정 성공", updateBoard));
     }
 

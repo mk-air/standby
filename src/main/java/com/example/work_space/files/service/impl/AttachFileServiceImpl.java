@@ -48,6 +48,15 @@ public class AttachFileServiceImpl implements AttachFileService {
 
     }
 
+    @Override
+    public void deleteAttachFile(Long imgFileId) {
+        AttachFile attachFile = attachFileRepository.findById(imgFileId)
+                .orElseThrow(() -> new IllegalArgumentException("해당 파일을 찾을 수 없습니다."));
+
+        attachFile.softDelete();
+
+    }
+
     // 파일 검증
 
     private static void validateMultiPartFile(MultipartFile file) {

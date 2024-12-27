@@ -79,13 +79,21 @@ public class BoardServiceImpl implements BoardService {
 
     @Transactional
     @Override
-    public BoardUpdateResponseDto updateBoard(Long boardId, BoardUpdateRequestDto updateRequestDto) {
+    public BoardUpdateResponseDto updateBoard(Long boardId, BoardUpdateRequestDto updateRequestDto, MultipartFile file) {
         WorkSpaceMember workSpaceMember = workSpaceMemberRepository.findByWorkSpaceIdAndMemberId(updateRequestDto.getWorkspaceId(),updateRequestDto.getMemberId())
                 .orElseThrow(() -> new IllegalArgumentException("해당 워크 스페이스 회원을 찾을 수 없습니다."));
         Board board = boardRepository.findById(boardId)
                 .orElseThrow(() -> new IllegalArgumentException("해당 보드를 찾을 수 없습니다. ID: " + boardId));
 
         validationOfRole(workSpaceMember);
+
+        // 이미지 파일 삭제하기
+        if(board.getAttachFiles().size() > 0){
+            AttachFile imgFile = board.getAttachFiles().get(0);
+            attachFileService.deleteAttachFile(imgFile.getId());
+        }
+        // 이미지 파일 생성
+        AttachFile imgFile = attachFileService.createImgFile(file);
 
         // 엔티티 업데이트
         board.updateBoard(
