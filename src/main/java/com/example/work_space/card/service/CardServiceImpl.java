@@ -75,7 +75,7 @@ public class CardServiceImpl implements CardService {
     }
 
     @Override
-    public CardResponseDto updateCard(CardRequestDto requestDto, Long cardId, Long authId) {
+    public CardResponseDto updateCard(CardRequestDto requestDto, Long cardId, Long authId, MultipartFile file) {
         Member member = null;
         if (StringUtils.isEmpty(requestDto.getTitle())
                 && StringUtils.isEmpty(requestDto.getContents())
@@ -97,7 +97,13 @@ public class CardServiceImpl implements CardService {
         Card updatedCard = card.update(requestDto.getTitle(), requestDto.getContents(), inputDate, member);
 
 
-        return new CardResponseDto(cardRepository.save(updatedCard));
+        attachFileService.deleteAttachFile(updatedCard.getAttachFiles().get(0).getId());
+
+        AttachFile attachFile = attachFileService.createAttachFile(file);
+        attachFile.updateCard(updatedCard);
+        updatedCard.updateAttachFile(attachFile);
+
+        return new CardResponseDto(updatedCard);
     }
 
     @Override

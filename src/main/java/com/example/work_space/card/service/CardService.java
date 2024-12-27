@@ -11,7 +11,7 @@ import java.util.List;
 public interface CardService {
     CardResponseDto createCard(CardRequestDto requestDto, Long authId, MultipartFile file);
 
-    CardResponseDto updateCard(CardRequestDto requestDto, Long cardId, Long authId);
+    CardResponseDto updateCard(CardRequestDto requestDto, Long cardId, Long authId, MultipartFile file);
 
     CardDetailResponseDto getCardDetail(Long cardId);
 
