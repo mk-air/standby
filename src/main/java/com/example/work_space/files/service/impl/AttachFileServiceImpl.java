@@ -1,6 +1,5 @@
 package com.example.work_space.files.service.impl;
 
-import com.example.work_space.board.entity.Board;
 import com.example.work_space.files.entity.AttachFile;
 import com.example.work_space.files.repository.AttachFileRepository;
 import com.example.work_space.files.service.AttachFileService;
@@ -23,7 +22,7 @@ public class AttachFileServiceImpl implements AttachFileService {
     private final FileUtils fileUtils;
 
     @Override
-    public AttachFile createImgFile(Board board, MultipartFile file) {
+    public AttachFile createImgFile(MultipartFile file) {
         //파일 검증
         validateMultiPartFile(file);
         validateImgFile(file);
@@ -36,7 +35,7 @@ public class AttachFileServiceImpl implements AttachFileService {
     }
 
     @Override
-    public AttachFile createAttachFile(Board board, MultipartFile file) {
+    public AttachFile createAttachFile(MultipartFile file) {
         //파일 검증
         validateMultiPartFile(file);
         validateFileExt(file);

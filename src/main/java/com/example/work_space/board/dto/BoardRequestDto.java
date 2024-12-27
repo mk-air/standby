@@ -13,23 +13,13 @@ public class BoardRequestDto {
     @NotBlank
     private String title; // 보드 이름
     private String color; // 보드 배경색
-    private String img; // 보드 이미지
     private String info; // 보드 설명
 
-//    public BoardRequestDto(BoardRequestDto requestDto) {
-//        this.workspaceId = requestDto.getWorkspaceId();
-//        this.memberId = requestDto.getMemberId();
-//        this.title = requestDto.getTitle();
-//        this.color = requestDto.getColor();
-//        this.img = requestDto.getImg();
-//        this.info = requestDto.getInfo();
-//    }
 
     public BoardRequestDto(Long workspaceId, Long memberId, String title, String img, String color, String info) {
         this.workspaceId = workspaceId;
         this.memberId = memberId;
         this.title = title;
-        this.img = img;
         this.color = color;
         this.info = info;
     }
@@ -39,7 +29,6 @@ public class BoardRequestDto {
         return Board.builder()
                 .title(title)
                 .color(color)
-                .img(img)
                 .info(info)
                 .build();
     }

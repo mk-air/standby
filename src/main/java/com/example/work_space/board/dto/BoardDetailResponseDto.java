@@ -16,7 +16,6 @@ public class BoardDetailResponseDto {
     @NotBlank
     private String title; // 보드 이름
     private String color; // 보드 배경색
-    private String img; // 보드 이미지
     private List<ListResponseDto> lists;
     private String info; // 보드 설명
 
@@ -27,7 +26,6 @@ public class BoardDetailResponseDto {
         this.id = board.getId();
         this.title = board.getTitle();
         this.color = board.getColor();
-        this.img = board.getImg();
         this.info = board.getInfo();
         this.createdAt = board.getCreatedAt();
         this.lists = board.getLists().stream().map(ListResponseDto::new).toList();

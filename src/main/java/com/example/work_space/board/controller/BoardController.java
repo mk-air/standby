@@ -6,6 +6,7 @@ import com.example.work_space.constants.CommonResponse;
 import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
@@ -21,8 +22,9 @@ public class BoardController {
 
     @PostMapping
     public ResponseEntity<CommonResponse<BoardResponseDto>> createBoard(
-            @Valid @RequestBody BoardRequestDto requestDto) {
-        BoardResponseDto board = boardService.createBoard(requestDto);
+            @Valid @RequestPart BoardRequestDto requestDto,
+            @RequestParam MultipartFile file) {
+        BoardResponseDto board = boardService.createBoard(requestDto,file);
         return ResponseEntity.ok(new CommonResponse<>("보드 생성", board));
     }
 
