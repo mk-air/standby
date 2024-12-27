@@ -12,6 +12,7 @@ import com.example.work_space.member.repository.MemberRepository;
 import com.example.work_space.workspace.type.WorkSpaceRole;
 import com.example.work_space.workspace_member.entity.WorkSpaceMember;
 import com.example.work_space.workspace_member.repository.WorkSpaceMemberRepository;
+import io.micrometer.common.util.StringUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -45,7 +46,7 @@ public class CardServiceImpl implements CardService {
         com.example.work_space.list.entity.List list = listRepository.findById(requestDto.getListId())
                 .orElseThrow(() -> new IllegalArgumentException("유효하지 않은 리스트입니다."));
         hasAccess(list, authId);
-        if (requestDto.getMember() != null ) {
+        if (!StringUtils.isEmpty(requestDto.getMember())) {
             // 사용자 확인
              member = memberRepository.findByEmail(requestDto.getMember())
                     .orElseThrow(() -> new IllegalArgumentException("유효하지 않은 사용자입니다."));
@@ -68,10 +69,17 @@ public class CardServiceImpl implements CardService {
     @Override
     public CardResponseDto updateCard(CardRequestDto requestDto, Long cardId, Long authId) {
         Member member = null;
+        if (StringUtils.isEmpty(requestDto.getTitle())
+                && StringUtils.isEmpty(requestDto.getContents())
+                && StringUtils.isEmpty(requestDto.getDeadline())
+                && StringUtils.isEmpty(requestDto.getMember())) {
+            throw new IllegalStateException("수정할 내용을 입력해주세요");
+        }
+
         Card card = cardRepository.findById(cardId)
                 .orElseThrow(() -> new IllegalArgumentException("유효하지 않은 카드입니다"));
         hasAccess(card.getList(), authId);
-        if (requestDto.getMember() != null ) {
+        if (!StringUtils.isEmpty(requestDto.getMember())) {
             // 사용자 확인
             member = memberRepository.findByEmail(requestDto.getMember())
                     .orElseThrow(() -> new IllegalArgumentException("유효하지 않은 사용자입니다."));
@@ -81,7 +89,7 @@ public class CardServiceImpl implements CardService {
         Card updatedCard = card.update(requestDto.getTitle(), requestDto.getContents(), inputDate, member);
 
 
-        return new CardResponseDto(updatedCard);
+        return new CardResponseDto(cardRepository.save(updatedCard));
     }
 
     @Override
@@ -107,7 +115,7 @@ public class CardServiceImpl implements CardService {
     @Override
     public List<CardResponseDto> searchCard(CardSearchRequestDto requestDto) {
         List<Card> cardList;
-        if (requestDto.getSearchWord() == null) {
+        if (StringUtils.isEmpty(requestDto.getSearchWord())) {
             cardList = cardRepository.findAll();
         } else {
             switch (requestDto.getSortBy()) {
@@ -131,9 +139,6 @@ public class CardServiceImpl implements CardService {
     }
 
     public static Date isValidDateFormat(String inputDate) {
-        if (inputDate == null) {
-            return null;
-        }
         Date date;
         String DATE_PATTERN = "yyyy-MM-dd";
 
@@ -151,11 +156,10 @@ public class CardServiceImpl implements CardService {
 
 
     public static Date isBeforeToday(String inputDate) {
-        Date date = isValidDateFormat(inputDate);
-
-        if (date == null) {
+        if (inputDate == null) {
             return null;
         }
+        Date date = isValidDateFormat(inputDate);
 
         String DATE_PATTERN = "yyyy-MM-dd";
         SimpleDateFormat sdf = new SimpleDateFormat(DATE_PATTERN);
