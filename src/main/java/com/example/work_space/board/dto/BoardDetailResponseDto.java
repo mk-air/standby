@@ -20,7 +20,7 @@ public class BoardDetailResponseDto {
     private List<ListResponseDto> lists;
     private String info; // 보드 설명
 
-    private LocalDateTime createdAt;
+    private LocalDateTime updatedAt;
 
     public BoardDetailResponseDto(Board board) {
         this.workspaceId = board.getWorkSpace().getId();
@@ -28,7 +28,7 @@ public class BoardDetailResponseDto {
         this.title = board.getTitle();
         this.color = board.getColor();
         this.info = board.getInfo();
-        this.createdAt = board.getCreatedAt();
+        this.updatedAt = board.getCreatedAt();
         this.lists = board.getLists().stream().map(ListResponseDto::new).toList();
         if (board.getAttachFiles().size() > 0) {
             this.imgId = board.getAttachFiles().get(0).getId();
