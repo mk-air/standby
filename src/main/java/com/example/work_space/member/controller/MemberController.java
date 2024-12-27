@@ -1,6 +1,7 @@
 package com.example.work_space.member.controller;
 
 import com.example.work_space.constants.CommonResponse;
+import com.example.work_space.member.dto.MemberDeleteRequestDto;
 import com.example.work_space.member.dto.MemberRequestDto;
 import com.example.work_space.member.dto.MemberResponseDto;
 import com.example.work_space.member.dto.MemberUpdateRequestDto;
@@ -42,8 +43,8 @@ public class MemberController {
     @DeleteMapping("/{memberId}")
     public ResponseEntity<CommonResponse<String>> deleteMember
             (@PathVariable Long memberId,
-            @RequestParam String password) {
-        memberService.deleteMember(memberId, password);
+             @RequestBody MemberDeleteRequestDto requestDto) {
+        memberService.deleteMember(memberId, requestDto);
         return ResponseEntity.ok(new CommonResponse<>("회원 삭제 완료"));
     }
 }
