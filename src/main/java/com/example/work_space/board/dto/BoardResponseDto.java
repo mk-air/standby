@@ -21,7 +21,11 @@ public class BoardResponseDto {
         this.id = board.getId();
         this.title = board.getTitle();
         this.color = board.getColor();
-        this.imgId = board.getAttachFiles().get(0).getId();
+        if (board.getAttachFiles().size() > 0) {
+            this.imgId = board.getAttachFiles().get(0).getId();
+        }else {
+            this.imgId = null;
+        }
         this.info = board.getInfo();
         this.createdAt = board.getCreatedAt();
     }
