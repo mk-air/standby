@@ -12,6 +12,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
@@ -26,13 +27,15 @@ public class CardController {
     }
 
     @PostMapping
-    public ResponseEntity<CommonResponse<CardResponseDto>> createCard(@RequestBody CardRequestDto requestDto, HttpServletRequest request) {
+    public ResponseEntity<CommonResponse<CardResponseDto>> createCard(@RequestPart CardRequestDto requestDto,
+                                                                      @RequestPart(required = false)MultipartFile file,
+                                                                      HttpServletRequest request) {
         HttpSession session =request.getSession(false);
 
         Authentication authentication = (Authentication) session.getAttribute(GlobalConstants.USER_AUTH);
         Long authId = authentication.getId();
 
-        CardResponseDto responseDto = cardService.createCard(requestDto, authId);
+        CardResponseDto responseDto = cardService.createCard(requestDto, authId,file);
         return ResponseEntity.ok(new CommonResponse<>("카드 생성 완료", responseDto));
     }
 

@@ -4,7 +4,6 @@ import com.example.work_space.card.entity.Card;
 import lombok.Getter;
 
 import java.text.SimpleDateFormat;
-import java.util.Date;
 
 @Getter
 public class CardResponseDto {
@@ -13,6 +12,7 @@ public class CardResponseDto {
     private String contents;
     private String  deadline;
     private String member;
+    private Long imgId;
 
     public CardResponseDto(Card card) {
         this.id = card.getId();
@@ -24,6 +24,12 @@ public class CardResponseDto {
         }
         if (card.getMember() != null) {
             this.member = card.getMember().getName();
+        }
+
+        if (card.getAttachFiles().size() > 0) {
+            this.imgId = card.getAttachFiles().get(0).getId();
+        }else {
+            this.imgId = null;
         }
     }
 }

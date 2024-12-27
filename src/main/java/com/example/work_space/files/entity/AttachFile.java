@@ -1,6 +1,7 @@
 package com.example.work_space.files.entity;
 
 import com.example.work_space.board.entity.Board;
+import com.example.work_space.card.entity.Card;
 import com.example.work_space.constants.BaseEntity;
 import jakarta.persistence.*;
 import lombok.Getter;
@@ -34,7 +35,9 @@ public class AttachFile extends BaseEntity {
     @JoinColumn(name = "board_id")
     private Board board;
 
-    //todo card 연관관계 추가
+    @ManyToOne
+    @JoinColumn(name = "card_id")
+    private Card card;
 
     public AttachFile(String originalFilename,String path) {
         String[] fileName = originalFilename.split("\\.");
@@ -54,5 +57,9 @@ public class AttachFile extends BaseEntity {
 
     public void softDelete() {
         this.deleted = true;
+    }
+
+    public void updateCard(Card savedCard) {
+        this.card = savedCard;
     }
 }
