@@ -1,6 +1,5 @@
 package com.example.work_space.member.service;
 
-import com.example.work_space.auth.dto.LoginRequestDto;
 import com.example.work_space.member.dto.MemberRequestDto;
 import com.example.work_space.member.dto.MemberResponseDto;
 import com.example.work_space.member.dto.MemberUpdateRequestDto;
