@@ -9,11 +9,11 @@ import java.util.Date;
 import java.util.List;
 
 public interface CardRepository extends JpaRepository<Card, Long> {
-    @Query("SELECT c FROM Card c WHERE c.title LIKE :searchWord ORDER BY c.title ASC")
-    List<Card> findAllByTitle(String searchWord);
+    @Query("SELECT c FROM Card c WHERE c.title LIKE %:title% ORDER BY c.title ASC")
+    List<Card> findAllByTitle(String title);
 
-    @Query("SELECT c FROM Card c WHERE c.contents LIKE :searchWord ORDER BY c.contents ASC")
-    List<Card> findAllByContents(String searchWord);
+    @Query("SELECT c FROM Card c WHERE c.contents LIKE %:contents% ORDER BY c.contents ASC")
+    List<Card> findAllByContents(String contents);
 
     List<Card> findAllByDeadline(Date deadline);
 
