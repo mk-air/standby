@@ -6,4 +6,6 @@ import org.springframework.web.multipart.MultipartFile;
 public interface AttachFileService {
     AttachFile createImgFile(MultipartFile file);
     AttachFile createAttachFile(MultipartFile file);
+
+    void deleteAttachFile(Long imgFileId);
 }

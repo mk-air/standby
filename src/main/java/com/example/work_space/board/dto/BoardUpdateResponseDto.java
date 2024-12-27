@@ -14,6 +14,7 @@ public class BoardUpdateResponseDto {
     private Long id;
     private String title; // 보드 이름
     private String color; // 보드 배경색
+    private Long imgId; // 보드 이미지 ID
     private String info; // 보드 설명
     private List<ListResponseDto> lists;
     private LocalDateTime createdAt;
@@ -28,5 +29,10 @@ public class BoardUpdateResponseDto {
         this.lists = board.getLists().stream().map(ListResponseDto::new).toList();
         this.createdAt = board.getCreatedAt();
         this.updatedAt = board.getUpdatedAt();
+        if (board.getAttachFiles().size() > 0) {
+            this.imgId = board.getAttachFiles().get(0).getId();
+        }else {
+            this.imgId = null;
+        }
     }
 }

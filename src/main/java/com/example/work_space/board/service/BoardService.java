@@ -10,7 +10,7 @@ public interface BoardService {
     BoardResponseDto createBoard(BoardRequestDto requestDto, MultipartFile file);
     BoardDetailResponseDto getBoard(Long boardId, Long memberId);
     List<BoardResponseDto> getBoards(Long workSpaceId);
-    BoardUpdateResponseDto updateBoard(Long boardId, BoardUpdateRequestDto updateRequestDto);
+    BoardUpdateResponseDto updateBoard(Long boardId, BoardUpdateRequestDto updateRequestDto, MultipartFile file);
     void deleteBoard(Long boardId, Long memberId);
 
 }

@@ -42,7 +42,7 @@ public class Board extends BaseEntity {
     public Board() {
     }
 
-    public Board updateBoard(String title, String color,  String info) {
+    public Board updateBoard(String title, String color, String info) {
         this.title = title;
         this.color = color;
         this.info = info;
