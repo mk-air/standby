@@ -6,6 +6,8 @@ import com.example.work_space.card.dto.CardResponseDto;
 import com.example.work_space.card.dto.CardSearchRequestDto;
 import com.example.work_space.card.entity.Card;
 import com.example.work_space.card.repository.CardRepository;
+import com.example.work_space.files.entity.AttachFile;
+import com.example.work_space.files.service.AttachFileService;
 import com.example.work_space.list.repository.ListRepository;
 import com.example.work_space.member.entity.Member;
 import com.example.work_space.member.repository.MemberRepository;
@@ -15,6 +17,7 @@ import com.example.work_space.workspace_member.repository.WorkSpaceMemberReposit
 import io.micrometer.common.util.StringUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -30,18 +33,20 @@ public class CardServiceImpl implements CardService {
     private final WorkSpaceMemberRepository workSpaceMemberRepository;
     private final ListRepository listRepository;
     private final CardRepository cardRepository;
+    private final AttachFileService attachFileService;
 
-    public CardServiceImpl(MemberRepository memberRepository, WorkSpaceMemberRepository workSpaceMemberRepository, ListRepository listRepository, CardRepository cardRepository) {
+    public CardServiceImpl(MemberRepository memberRepository, WorkSpaceMemberRepository workSpaceMemberRepository, ListRepository listRepository, CardRepository cardRepository, AttachFileService attachFileService) {
         this.memberRepository = memberRepository;
         this.workSpaceMemberRepository = workSpaceMemberRepository;
         this.listRepository = listRepository;
         this.cardRepository = cardRepository;
+        this.attachFileService = attachFileService;
     }
 
 
     @Transactional
     @Override
-    public CardResponseDto createCard(CardRequestDto requestDto, Long authId) {
+    public CardResponseDto createCard(CardRequestDto requestDto, Long authId, MultipartFile file) {
         Member member = null;
         com.example.work_space.list.entity.List list = listRepository.findById(requestDto.getListId())
                 .orElseThrow(() -> new IllegalArgumentException("유효하지 않은 리스트입니다."));
@@ -62,6 +67,9 @@ public class CardServiceImpl implements CardService {
                 .build();
 
         Card savedCard = cardRepository.save(card);
+        AttachFile attachFile = attachFileService.createAttachFile(file);
+        attachFile.updateCard(savedCard);
+        savedCard.updateAttachFile(attachFile);
 
         return new CardResponseDto(savedCard);
     }
