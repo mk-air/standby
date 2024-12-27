@@ -124,6 +124,7 @@ public class CardServiceImpl implements CardService {
         hasAccess(card.getList(), authId);
 
         cardRepository.delete(card);
+        attachFileService.deleteAttachFile(card.getAttachFiles().get(0).getId());
     }
 
     @Override
