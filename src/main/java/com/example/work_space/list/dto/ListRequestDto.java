@@ -11,12 +11,10 @@ public class ListRequestDto {
 
     @NotBlank
     private String title;
-    private Long seq;
 
-    public ListRequestDto(Long boardId, String title, Long seq) {
+    public ListRequestDto(Long boardId, String title){
         this.boardId = boardId;
         this.title = title;
-//        this.seq = seq;
     }
 
     public ListRequestDto() {
@@ -25,14 +23,12 @@ public class ListRequestDto {
     public ListRequestDto(ListRequestDto requestDto) {
         this.boardId = requestDto.getBoardId();
         this.title = requestDto.getTitle();
-//        this.seq = requestDto.getSeq();
     }
 
     // Lists 엔티티 반환 메서드
     public List toEntity() {
         return List.builder()
                 .title(title)
-                .seq(seq)
                 .build();
     }
 }

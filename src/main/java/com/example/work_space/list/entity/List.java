@@ -1,10 +1,13 @@
 package com.example.work_space.list.entity;
 
 import com.example.work_space.board.entity.Board;
+import com.example.work_space.card.entity.Card;
 import com.example.work_space.constants.BaseEntity;
 import jakarta.persistence.*;
 import lombok.Builder;
 import lombok.Getter;
+
+import java.util.ArrayList;
 
 @Entity
 @Getter
@@ -20,8 +23,8 @@ public class List extends BaseEntity {
     @JoinColumn(name = "board_id", nullable = false)
     private Board board;
 
-//    @OneToMany(mappedBy = "list", cascade = CascadeType.ALL, orphanRemoval = true)
-//    private List<Card> cards = new ArrayList<>();
+    @OneToMany(mappedBy = "list", cascade = CascadeType.ALL, orphanRemoval = true)
+    private java.util.List<Card> cards = new ArrayList<>();
 
     @Builder
     public List(Board board, String title, Long seq) {

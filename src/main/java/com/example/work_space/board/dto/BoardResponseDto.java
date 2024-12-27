@@ -14,7 +14,7 @@ public class BoardResponseDto {
     private String color; // 보드 배경색
     private Long imgId; // 보드 이미지 ID
     private String info; // 보드 설명
-    private LocalDateTime createdAt;
+    private LocalDateTime updatedAt;
 
     public BoardResponseDto(Board board) {
         this.workspaceId = board.getWorkSpace().getId();
@@ -27,7 +27,7 @@ public class BoardResponseDto {
             this.imgId = null;
         }
         this.info = board.getInfo();
-        this.createdAt = board.getCreatedAt();
+        this.updatedAt = board.getUpdatedAt();
     }
 
 }
