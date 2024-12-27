@@ -41,14 +41,15 @@ public class CardServiceImpl implements CardService {
     @Transactional
     @Override
     public CardResponseDto createCard(CardRequestDto requestDto, Long authId) {
+        Member member = null;
         com.example.work_space.list.entity.List list = listRepository.findById(requestDto.getListId())
                 .orElseThrow(() -> new IllegalArgumentException("유효하지 않은 리스트입니다."));
-
         hasAccess(list, authId);
-        // 사용자 확인
-        Member member = memberRepository.findByEmail(requestDto.getMember())
-                .orElseThrow(() -> new IllegalArgumentException("유효하지 않은 사용자입니다."));
-
+        if (requestDto.getMember() != null ) {
+            // 사용자 확인
+             member = memberRepository.findByEmail(requestDto.getMember())
+                    .orElseThrow(() -> new IllegalArgumentException("유효하지 않은 사용자입니다."));
+        }
         Date inputDate = isBeforeToday(requestDto.getDeadline());
 
         Card card = Card.builder()
@@ -66,14 +67,15 @@ public class CardServiceImpl implements CardService {
 
     @Override
     public CardResponseDto updateCard(CardRequestDto requestDto, Long cardId, Long authId) {
+        Member member = null;
         Card card = cardRepository.findById(cardId)
                 .orElseThrow(() -> new IllegalArgumentException("유효하지 않은 카드입니다"));
         hasAccess(card.getList(), authId);
-
-        // 사용자 확인
-        Member member = memberRepository.findByEmail(requestDto.getMember())
-                .orElseThrow(() -> new IllegalArgumentException("유효하지 않은 사용자입니다."));
-
+        if (requestDto.getMember() != null ) {
+            // 사용자 확인
+            member = memberRepository.findByEmail(requestDto.getMember())
+                    .orElseThrow(() -> new IllegalArgumentException("유효하지 않은 사용자입니다."));
+        }
         Date inputDate = isBeforeToday(requestDto.getDeadline());
 
         Card updatedCard = card.update(requestDto.getTitle(), requestDto.getContents(), inputDate, member);
@@ -109,14 +111,14 @@ public class CardServiceImpl implements CardService {
             cardList = cardRepository.findAll();
         } else {
             switch (requestDto.getSortBy()) {
-                case "제목" -> cardList = cardRepository.findAllByTitle(requestDto.getSortBy());
-                case "내용" -> cardList = cardRepository.findAllByContents(requestDto.getSortBy());
+                case "제목" -> cardList = cardRepository.findAllByTitle(requestDto.getSearchWord());
+                case "내용" -> cardList = cardRepository.findAllByContents(requestDto.getSearchWord());
                 case "마감일" -> {
-                    Date inputDate = isValidDateFormat(requestDto.getSortBy());
+                    Date inputDate = isValidDateFormat(requestDto.getSearchWord());
                     cardList = cardRepository.findAllByDeadline(inputDate);
                 }
                 case "담당자" -> {
-                    Member member = memberRepository.findByEmail(requestDto.getSortBy())
+                    Member member = memberRepository.findByEmail(requestDto.getSearchWord())
                             .orElseThrow(() -> new IllegalArgumentException("유효하지 않은 사용자입니다."));
                     cardList = cardRepository.findAllByMember(member);
                 }

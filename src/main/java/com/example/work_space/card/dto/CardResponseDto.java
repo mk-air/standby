@@ -1,9 +1,11 @@
 package com.example.work_space.card.dto;
 
 import com.example.work_space.card.entity.Card;
+import lombok.Getter;
 
 import java.util.Date;
 
+@Getter
 public class CardResponseDto {
     private Long id;
     private String title;
