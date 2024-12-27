@@ -11,6 +11,10 @@ spring:
       org.springframework: ${SPRING_LOGGING_LEVEL_ORG_SPRINGFRAMEWORK}
       org.hibernate: ${SPRING_LOGGING_LEVEL_ORG_HIBERNATE}
 
+  servlet:
+    multipart:
+      max-file-size: 5MB
+
 
   datasource:
     url: ${SPRING_DATASOURCE_URL}
