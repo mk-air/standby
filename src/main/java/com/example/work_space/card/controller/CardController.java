@@ -41,13 +41,15 @@ public class CardController {
 
     @PutMapping("/{cardId}")
     public ResponseEntity<CommonResponse<CardResponseDto>> updateCard(
-            @RequestBody CardRequestDto requestDto, @PathVariable Long cardId, HttpServletRequest request) {
+            @RequestPart CardRequestDto requestDto, @PathVariable Long cardId,
+            @RequestPart(required = false) MultipartFile file,
+            HttpServletRequest request) {
         HttpSession session =request.getSession(false);
 
         Authentication authentication = (Authentication) session.getAttribute(GlobalConstants.USER_AUTH);
         Long authId = authentication.getId();
 
-        CardResponseDto responseDto = cardService.updateCard(requestDto, cardId, authId);
+        CardResponseDto responseDto = cardService.updateCard(requestDto, cardId, authId,file);
         return ResponseEntity.ok(new CommonResponse<>("카드 수정 완료", responseDto));
     }
 
