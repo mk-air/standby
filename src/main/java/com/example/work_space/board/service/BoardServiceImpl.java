@@ -121,6 +121,7 @@ public class BoardServiceImpl implements BoardService {
 
         // 보드 삭제
         boardRepository.delete(board);
+        attachFileService.deleteAttachFile(board.getAttachFiles().get(0).getId());
     }
 
     // 권한 확인
