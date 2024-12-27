@@ -3,6 +3,8 @@ package com.example.work_space.board.service;
 import com.example.work_space.board.dto.*;
 import com.example.work_space.board.entity.Board;
 import com.example.work_space.board.repository.BoardRepository;
+import com.example.work_space.files.entity.AttachFile;
+import com.example.work_space.files.service.AttachFileService;
 import com.example.work_space.workspace.entity.WorkSpace;
 import com.example.work_space.workspace.repository.WorkSpaceRepository;
 import com.example.work_space.workspace.type.WorkSpaceRole;
@@ -10,6 +12,8 @@ import com.example.work_space.workspace_member.entity.WorkSpaceMember;
 import com.example.work_space.workspace_member.repository.WorkSpaceMemberRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
+
 import java.util.List;
 
 @Service
@@ -18,16 +22,18 @@ public class BoardServiceImpl implements BoardService {
     private final BoardRepository boardRepository;
     private final WorkSpaceRepository workSpaceRepository;
     private final WorkSpaceMemberRepository workSpaceMemberRepository;
+    private final AttachFileService attachFileService;
 
-    public BoardServiceImpl(BoardRepository boardRepository, WorkSpaceRepository workSpaceRepository, WorkSpaceMemberRepository workSpaceMemberRepository) {
+    public BoardServiceImpl(BoardRepository boardRepository, WorkSpaceRepository workSpaceRepository, WorkSpaceMemberRepository workSpaceMemberRepository, AttachFileService attachFileService) {
         this.boardRepository = boardRepository;
         this.workSpaceRepository = workSpaceRepository;
         this.workSpaceMemberRepository = workSpaceMemberRepository;
+        this.attachFileService = attachFileService;
     }
 
     @Transactional
     @Override
-    public BoardResponseDto createBoard(BoardRequestDto requestDto) {
+    public BoardResponseDto createBoard(BoardRequestDto requestDto, MultipartFile file) {
         WorkSpace workSpace = workSpaceRepository.findById(requestDto.getWorkspaceId()).orElseThrow();
         WorkSpaceMember workSpaceMember = workSpaceMemberRepository.findByWorkSpaceIdAndMemberId(requestDto.getWorkspaceId(),requestDto.getMemberId())
                 .orElseThrow(() -> new IllegalArgumentException("해당 워크 스페이스 회원을 찾을 수 없습니다."));
@@ -38,10 +44,11 @@ public class BoardServiceImpl implements BoardService {
                 .workSpace(workSpace)
                 .title(requestDto.getTitle())
                 .color(requestDto.getColor())
-                .img(requestDto.getImg())
                 .info(requestDto.getInfo())
                 .build();
         Board savedBoard = boardRepository.save(board);
+        AttachFile imgFile = attachFileService.createImgFile(file);
+        savedBoard.updateAttachFile(imgFile);
 
         return new BoardResponseDto(savedBoard);
 
@@ -83,7 +90,6 @@ public class BoardServiceImpl implements BoardService {
         board.updateBoard(
                 updateRequestDto.getTitle(),
                 updateRequestDto.getColor(),
-                updateRequestDto.getImg(),
                 updateRequestDto.getInfo()
         );
 
