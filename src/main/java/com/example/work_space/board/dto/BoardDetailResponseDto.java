@@ -30,6 +30,10 @@ public class BoardDetailResponseDto {
         this.info = board.getInfo();
         this.createdAt = board.getCreatedAt();
         this.lists = board.getLists().stream().map(ListResponseDto::new).toList();
-        this.imgId = board.getAttachFiles().get(0).getId();
+        if (board.getAttachFiles().size() > 0) {
+            this.imgId = board.getAttachFiles().get(0).getId();
+        }else {
+            this.imgId = null;
+        }
     }
 }
