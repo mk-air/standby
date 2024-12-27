@@ -1,6 +1,7 @@
 package com.example.work_space.member.service;
 
 import com.example.work_space.config.PasswordEncoder;
+import com.example.work_space.member.dto.MemberDeleteRequestDto;
 import com.example.work_space.member.dto.MemberRequestDto;
 import com.example.work_space.member.dto.MemberResponseDto;
 import com.example.work_space.member.dto.MemberUpdateRequestDto;
@@ -66,7 +67,7 @@ public class MemberServiceImpl implements MemberService {
 
     @Transactional
     @Override
-    public void deleteMember(Long id, String password) {
+    public void deleteMember(Long id, MemberDeleteRequestDto memberDeleteRequestDto) {
         // 삭제되지 않은 회원만 조회
         Member member = memberRepository.findActiveById(id)
                 .orElseThrow(() -> new IllegalArgumentException("해당 회원이 존재하지 않거나 이미 삭제되었습니다."));
@@ -75,7 +76,7 @@ public class MemberServiceImpl implements MemberService {
         String encodedPassword = passwordEncoder.encode(member.getPassword());
 
         // 비밀번호 검증
-        if (!passwordEncoder.matches(password, member.getPassword())) {
+        if (!passwordEncoder.matches(memberDeleteRequestDto.getPassword(), member.getPassword())) {
             log.error("비밀번호가 일치하지 않습니다.");
             throw new IllegalArgumentException("비밀번호가 일치하지 않습니다.");
         }
