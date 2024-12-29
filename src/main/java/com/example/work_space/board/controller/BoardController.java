@@ -23,7 +23,7 @@ public class BoardController {
     @PostMapping
     public ResponseEntity<CommonResponse<BoardResponseDto>> createBoard(
             @Valid @RequestPart BoardRequestDto requestDto,
-            @RequestParam MultipartFile file) {
+            @RequestPart(name = "file") MultipartFile file) {
         BoardResponseDto board = boardService.createBoard(requestDto,file);
         return ResponseEntity.ok(new CommonResponse<>("보드 생성", board));
     }
