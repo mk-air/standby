@@ -67,9 +67,11 @@ public class CardServiceImpl implements CardService {
                 .build();
 
         Card savedCard = cardRepository.save(card);
-        AttachFile attachFile = attachFileService.createAttachFile(file);
-        attachFile.updateCard(savedCard);
-        savedCard.updateAttachFile(attachFile);
+        if(file != null) {
+            AttachFile attachFile = attachFileService.createAttachFile(file);
+            attachFile.updateCard(savedCard);
+            savedCard.updateAttachFile(attachFile);
+        }
 
         return new CardResponseDto(savedCard);
     }
@@ -96,12 +98,15 @@ public class CardServiceImpl implements CardService {
 
         Card updatedCard = card.update(requestDto.getTitle(), requestDto.getContents(), inputDate, member);
 
+        if (!updatedCard.getAttachFiles().isEmpty()) {
+            attachFileService.deleteAttachFile(updatedCard.getAttachFiles().get(0).getId());
+        }
+        if(file != null) {
+            AttachFile attachFile = attachFileService.createAttachFile(file);
+            attachFile.updateCard(updatedCard);
+            updatedCard.updateAttachFile(attachFile);
+        }
 
-        attachFileService.deleteAttachFile(updatedCard.getAttachFiles().get(0).getId());
-
-        AttachFile attachFile = attachFileService.createAttachFile(file);
-        attachFile.updateCard(updatedCard);
-        updatedCard.updateAttachFile(attachFile);
 
         return new CardResponseDto(updatedCard);
     }
@@ -124,7 +129,9 @@ public class CardServiceImpl implements CardService {
         hasAccess(card.getList(), authId);
 
         cardRepository.delete(card);
-        attachFileService.deleteAttachFile(card.getAttachFiles().get(0).getId());
+        if (!card.getAttachFiles().isEmpty()) {
+            attachFileService.deleteAttachFile(card.getAttachFiles().get(0).getId());
+        }
     }
 
     @Override
