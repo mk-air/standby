@@ -4,7 +4,6 @@
 ## 👨‍💻 Period : 2024/12/23 ~ 2024/12/30
 ## 👨‍💻 ERD : <img width="888" alt="image" src="https://github.com/user-attachments/assets/9ff50bfd-c095-4cf2-9d00-1003b19d452d" />
 ## 👨‍💻 API 명세서 : <a-href>https://schema.getpostman.com/json/collection/v2.0.0/collection.json</a-href>
-## 👨‍💻 기능 설명 : 
 ## 🥵 Troubleshooting
 - Member & WorkSpace
   1. 회원과 WorkSpace간의 연관 관계 다대다로 풀어서 해결 
