@@ -2,7 +2,8 @@
 ## ProjectName : WorkSpace
 ## 🛠️ Tools :<img src="https://img.shields.io/badge/mysql-4479A1?style=for-the-badge&logo=mysql&logoColor=white"> <img src="https://img.shields.io/badge/spring-6DB33F?style=for-the-badge&logo=github&logoColor=Green"> <img alt="Java" src ="https://img.shields.io/badge/Java-007396.svg?&style=for-the-badge&logo=Java&logoColor=white"/>  <img alt="Java" src ="https://img.shields.io/badge/intellijidea-000000.svg?&style=for-the-badge&logo=intellijidea&logoColor=white"/>
 ## 👨‍💻 Period : 2024/12/23 ~ 2024/12/30
-## 👨‍💻 ERD : <img width="888" alt="image" src="https://github.com/user-attachments/assets/9ff50bfd-c095-4cf2-9d00-1003b19d452d" />
+## 👨‍💻 ERD : 
+<img width="888" alt="image" src="https://github.com/user-attachments/assets/9ff50bfd-c095-4cf2-9d00-1003b19d452d" />
 ## 👨‍💻 API 명세서 : <a-href>https://schema.getpostman.com/json/collection/v2.0.0/collection.json</a-href>
 ## 🥵 Troubleshooting
 - Member & WorkSpace
