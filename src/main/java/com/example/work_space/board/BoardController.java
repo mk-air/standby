@@ -1,7 +1,6 @@
-package com.example.work_space.board.controller;
+package com.example.work_space.board;
 
 import com.example.work_space.board.dto.*;
-import com.example.work_space.board.service.BoardService;
 import com.example.work_space.constants.CommonResponse;
 import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;

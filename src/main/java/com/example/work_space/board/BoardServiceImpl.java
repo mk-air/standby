@@ -1,8 +1,7 @@
-package com.example.work_space.board.service;
+package com.example.work_space.board;
 
 import com.example.work_space.board.dto.*;
 import com.example.work_space.board.entity.Board;
-import com.example.work_space.board.repository.BoardRepository;
 import com.example.work_space.files.entity.AttachFile;
 import com.example.work_space.files.service.AttachFileService;
 import com.example.work_space.workspace.entity.WorkSpace;
@@ -72,9 +71,9 @@ public class BoardServiceImpl implements BoardService {
     @Transactional(readOnly = true)
     @Override
     public List<BoardResponseDto> getBoards(Long workSpaceId) {
-        List<Board> boardList = boardRepository.findAllByWorkSpaceId(workSpaceId);
-
-        return boardList.stream().map(BoardResponseDto::new).toList();
+        return boardRepository.findAllByWorkSpaceId(workSpaceId).stream()
+                .map(BoardResponseDto::new)
+                .toList();
     }
 
     @Transactional

@@ -2,6 +2,7 @@ package com.example.work_space.card.dto;
 
 import com.example.work_space.card.entity.Card;
 import lombok.Getter;
+import org.springframework.util.CollectionUtils;
 
 import java.text.SimpleDateFormat;
 
@@ -22,14 +23,9 @@ public class CardResponseDto {
             SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
             this.deadline = formatter.format(card.getDeadline());
         }
-        if (card.getMember() != null) {
-            this.member = card.getMember().getName();
-        }
-
-        if (card.getAttachFiles().size() > 0) {
+        this.member = card.getMember().getName();
+        if (!CollectionUtils.isEmpty(card.getAttachFiles())) {
             this.imgId = card.getAttachFiles().get(0).getId();
-        }else {
-            this.imgId = null;
         }
     }
 }

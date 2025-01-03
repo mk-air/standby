@@ -1,8 +1,7 @@
-package com.example.work_space.auth.controller;
+package com.example.work_space.auth;
 
 import com.example.work_space.auth.dto.AuthRequestDto;
 import com.example.work_space.auth.dto.AuthResponseDto;
-import com.example.work_space.auth.service.AuthService;
 import com.example.work_space.constants.CommonResponse;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;

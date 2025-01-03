@@ -5,11 +5,11 @@ import lombok.Getter;
 
 @Getter
 public class CardRequestDto {
-    private String title;
-    private String contents;
-    private String deadline;
-    private String member; // member email
-    private Long listId;
+    private final String title;
+    private final String contents;
+    private final String deadline;
+    private final String member; // member email
+    private final Long listId;
 
     public CardRequestDto(String title, String contents, String deadline, String member, Long listId) {
         this.title = title;

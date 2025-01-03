@@ -1,7 +1,7 @@
 package com.example.work_space.list.service;
 
 import com.example.work_space.board.entity.Board;
-import com.example.work_space.board.repository.BoardRepository;
+import com.example.work_space.board.BoardRepository;
 import com.example.work_space.list.dto.ListRequestDto;
 import com.example.work_space.list.dto.ListResponseDto;
 import com.example.work_space.list.dto.ListUpdateRequestDto;

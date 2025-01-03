@@ -1,8 +1,8 @@
-package com.example.work_space.auth.service;
+package com.example.work_space.auth;
 
 import com.example.work_space.auth.dto.AuthRequestDto;
 import com.example.work_space.auth.dto.AuthResponseDto;
-import com.example.work_space.auth.entity.Authentication;
+import com.example.work_space.auth.model.Authentication;
 import com.example.work_space.config.PasswordEncoder;
 import com.example.work_space.constants.GlobalConstants;
 import com.example.work_space.member.entity.Member;

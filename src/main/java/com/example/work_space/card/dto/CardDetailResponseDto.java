@@ -4,6 +4,7 @@ import com.example.work_space.card.entity.Card;
 import lombok.Getter;
 
 import java.text.SimpleDateFormat;
+import java.util.Optional;
 
 @Getter
 public class CardDetailResponseDto {
@@ -21,8 +22,8 @@ public class CardDetailResponseDto {
             SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
             this.deadline = formatter.format(card.getDeadline());
         }
-        if (card.getMember() != null) {
-            this.member = card.getMember().getName();
-        }
+
+        this.member = Optional.ofNullable(card.getMember().getName())
+                .orElseGet(null);
     }
 }

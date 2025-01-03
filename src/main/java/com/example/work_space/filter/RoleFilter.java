@@ -1,6 +1,6 @@
 package com.example.work_space.filter;
 
-import com.example.work_space.auth.entity.Authentication;
+import com.example.work_space.auth.model.Authentication;
 import com.example.work_space.constants.GlobalConstants;
 import com.example.work_space.member.type.Role;
 import jakarta.servlet.FilterChain;
