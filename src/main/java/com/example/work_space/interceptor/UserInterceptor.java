@@ -1,9 +1,8 @@
 
 package com.example.work_space.interceptor;
 
-import com.example.work_space.auth.entity.Authentication;
+import com.example.work_space.auth.model.Authentication;
 import com.example.work_space.constants.GlobalConstants;
-import com.example.work_space.member.type.Role;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;

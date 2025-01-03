@@ -1,4 +1,4 @@
-package com.example.work_space.auth.entity;
+package com.example.work_space.auth.model;
 
 import com.example.work_space.member.type.Role;
 import lombok.Getter;

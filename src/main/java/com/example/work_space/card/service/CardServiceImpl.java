@@ -50,7 +50,7 @@ public class CardServiceImpl implements CardService {
         Member member = null;
         com.example.work_space.list.entity.List list = listRepository.findById(requestDto.getListId())
                 .orElseThrow(() -> new IllegalArgumentException("유효하지 않은 리스트입니다."));
-        hasAccess(list, authId);
+        checkAccess(list, authId);
         if (!StringUtils.isEmpty(requestDto.getMember())) {
             // 사용자 확인
              member = memberRepository.findByEmail(requestDto.getMember())
@@ -78,17 +78,15 @@ public class CardServiceImpl implements CardService {
 
     @Override
     public CardResponseDto updateCard(CardRequestDto requestDto, Long cardId, Long authId, MultipartFile file) {
-        Member member = null;
-        if (StringUtils.isEmpty(requestDto.getTitle())
-                && StringUtils.isEmpty(requestDto.getContents())
-                && StringUtils.isEmpty(requestDto.getDeadline())
-                && StringUtils.isEmpty(requestDto.getMember())) {
+        if (isAllEmptyReqeust(requestDto)) {
             throw new IllegalStateException("수정할 내용을 입력해주세요");
         }
 
         Card card = cardRepository.findById(cardId)
                 .orElseThrow(() -> new IllegalArgumentException("유효하지 않은 카드입니다"));
-        hasAccess(card.getList(), authId);
+        checkAccess(card.getList(), authId);
+
+        Member member = null;
         if (!StringUtils.isEmpty(requestDto.getMember())) {
             // 사용자 확인
             member = memberRepository.findByEmail(requestDto.getMember())
@@ -111,6 +109,13 @@ public class CardServiceImpl implements CardService {
         return new CardResponseDto(updatedCard);
     }
 
+    private static boolean isAllEmptyReqeust(CardRequestDto requestDto) {
+        return StringUtils.isEmpty(requestDto.getTitle())
+                && StringUtils.isEmpty(requestDto.getContents())
+                && StringUtils.isEmpty(requestDto.getDeadline())
+                && StringUtils.isEmpty(requestDto.getMember());
+    }
+
     @Override
     public CardDetailResponseDto getCardDetail(Long cardId) {
 
@@ -126,7 +131,7 @@ public class CardServiceImpl implements CardService {
         Card card = cardRepository.findById(cardId)
                 .orElseThrow(() -> new IllegalArgumentException("유효하지 않은 카드입니다"));
 
-        hasAccess(card.getList(), authId);
+        checkAccess(card.getList(), authId);
 
         cardRepository.delete(card);
         if (!card.getAttachFiles().isEmpty()) {
@@ -199,7 +204,7 @@ public class CardServiceImpl implements CardService {
         }
     }
 
-    public void hasAccess(com.example.work_space.list.entity.List list, Long authId) {
+    public void checkAccess(com.example.work_space.list.entity.List list, Long authId) {
         Long workSpaceId = list.getBoard().getWorkSpace().getId();
         Optional<WorkSpaceMember> workSpaceMember = workSpaceMemberRepository.findByWorkSpaceIdAndMemberId(workSpaceId, authId);
         WorkSpaceRole role;

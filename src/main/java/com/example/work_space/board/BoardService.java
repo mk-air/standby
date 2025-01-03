@@ -1,4 +1,4 @@
-package com.example.work_space.board.service;
+package com.example.work_space.board;
 
 import com.example.work_space.board.dto.*;
 import org.springframework.web.multipart.MultipartFile;

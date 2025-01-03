@@ -1,6 +1,6 @@
 package com.example.work_space.card.controller;
 
-import com.example.work_space.auth.entity.Authentication;
+import com.example.work_space.auth.model.Authentication;
 import com.example.work_space.card.dto.CardDetailResponseDto;
 import com.example.work_space.card.dto.CardRequestDto;
 import com.example.work_space.card.dto.CardResponseDto;
@@ -40,10 +40,10 @@ public class CardController {
     }
 
     @PutMapping("/{cardId}")
-    public ResponseEntity<CommonResponse<CardResponseDto>> updateCard(
-            @RequestPart CardRequestDto requestDto, @PathVariable Long cardId,
-            @RequestPart(required = false) MultipartFile file,
-            HttpServletRequest request) {
+    public ResponseEntity<CommonResponse<CardResponseDto>> updateCard(@RequestPart CardRequestDto requestDto,
+                                                                      @PathVariable Long cardId,
+                                                                      @RequestPart(required = false) MultipartFile file,
+                                                                      HttpServletRequest request) {
         HttpSession session =request.getSession(false);
 
         Authentication authentication = (Authentication) session.getAttribute(GlobalConstants.USER_AUTH);
@@ -54,16 +54,14 @@ public class CardController {
     }
 
     @GetMapping("/{cardId}")
-    public ResponseEntity<CommonResponse<CardDetailResponseDto>> getCard(
-            @PathVariable Long cardId) {
+    public ResponseEntity<CommonResponse<CardDetailResponseDto>> getCard(@PathVariable Long cardId) {
 
         CardDetailResponseDto responseDto = cardService.getCardDetail(cardId);
         return ResponseEntity.ok(new CommonResponse<>("카드 상세 조회 완료", responseDto));
     }
 
     @DeleteMapping("/{cardId}")
-    public ResponseEntity<CommonResponse<String>> deleteCard(
-            @PathVariable Long cardId, HttpServletRequest request) {
+    public ResponseEntity<CommonResponse<String>> deleteCard(@PathVariable Long cardId, HttpServletRequest request) {
         HttpSession session =request.getSession(false);
 
         Authentication authentication = (Authentication) session.getAttribute(GlobalConstants.USER_AUTH);
